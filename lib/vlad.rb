@@ -48,12 +48,13 @@ module Vlad
     order += options.keys - order
 
     recipes = {
-      :app    => :passenger,
-      :type   => :rails,
-      :config => 'config/deploy.rb',
-      :core   => :core,
-      :scm    => :subversion,
-      :web    => :apache,
+      :app          => :passenger,
+      :type         => :rails,
+      :config       => 'config/deploy.rb',
+      :core         => :core,
+      :scm          => :subversion,
+      :web          => :apache,
+      :dependencies => :bundler
     }.merge(options)
 
     order.each do |flavor|
