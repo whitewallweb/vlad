@@ -5,17 +5,18 @@ namespace :vlad do
   # Apache web server
 
   set :web_command, "apachectl"
+  set :using_apache, true
 
   desc "(Re)Start the web servers"
 
   remote_task :start_web, :roles => :web  do
-    run "#{web_command} restart"
+    run "#{web_command} restart" if using_apache
   end
 
   desc "Stop the web servers"
 
   remote_task :stop_web, :roles => :web  do
-    run "#{web_command} stop"
+    run "#{web_command} stop" if using_apache
   end
 
   ##
