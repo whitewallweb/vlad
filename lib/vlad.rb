@@ -44,7 +44,7 @@ module Vlad
 
   def self.load options = {}
     options = {:config => options} if String === options
-    order = [:core, :type, :app, :config, :scm, :web]
+    order = [:core, :type, :app, :dependencies, :config, :scm, :web]
     order += options.keys - order
 
     recipes = {
