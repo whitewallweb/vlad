@@ -19,7 +19,6 @@ namespace :vlad do
     else
       install_path = gem_install_path
     end
-    run "ls -hal ~/public_html/blacksash"   
     run "cd #{latest_release} && (bundle check > /dev/null || bundle install --without development test --path #{install_path})"
   end
 end
