@@ -51,16 +51,19 @@ namespace :vlad do
 
   remote_task :update, :roles => :app do
     symlink = false
+    run [ "cd #{scm_path}",
+	  "#{source.checkout revision, scm_path}",
+	  "#{source.export revision, release_path}",
+	  "chmod -R g+w #{latest_release}",
+	  "rm -rf #{shared_paths.values.map { |p| File.join(latest_release, p) }.join(' ')}",
+	  "mkdir -p #{mkdirs.map { |d| File.join(latest_release, d) }.join(' ')}"
+	].join(" && ")
+    Rake::Task['vlad:update_symlinks'].invoke
+  end
+  
+  desc "Symlinks the new release as the current release"
+  remote_task :finalize, :roles => :app do
     begin
-      run [ "cd #{scm_path}",
-            "#{source.checkout revision, scm_path}",
-            "#{source.export revision, release_path}",
-            "chmod -R g+w #{latest_release}",
-            "rm -rf #{shared_paths.values.map { |p| File.join(latest_release, p) }.join(' ')}",
-            "mkdir -p #{mkdirs.map { |d| File.join(latest_release, d) }.join(' ')}"
-          ].join(" && ")
-      Rake::Task['vlad:update_symlinks'].invoke
-
       symlink = true
       run "rm -f #{current_path} && ln -s #{latest_release} #{current_path}"
 

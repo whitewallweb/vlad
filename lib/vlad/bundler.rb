@@ -6,6 +6,20 @@ namespace :vlad do
 
   desc "Ensure bundler is up to date, and install any missing dependencies."
   remote_task :bundler, :roles => :web do
-    run "cd #{current_path} && (bundle check > /dev/null || bundle install --without development test --path #{gem_install_path || shared_path+'/gems'})"
+    unless gem_install_path
+      # If we're caching gems in vendor, copy the existing gems (speeds things up)
+      puts "Copying gems from previous release to speed up installation ..."
+      begin
+        run "cp -Rf #{previous_release}/vendor/ruby #{latest_release}/vendor" 
+      rescue Rake::CommandFailedError
+        puts "Copy failed. Most likely the previous release did not have gems installed to the same place."
+      end
+
+      install_path = "vendor"
+    else
+      install_path = gem_install_path
+    end
+    run "ls -hal ~/public_html/blacksash"   
+    run "cd #{latest_release} && (bundle check > /dev/null || bundle install --without development test --path #{install_path})"
   end
 end
