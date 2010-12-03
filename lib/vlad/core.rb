@@ -51,6 +51,8 @@ namespace :vlad do
 
   remote_task :update, :roles => :app do
     symlink = false
+    "Updating source code...".print_status
+
     run [ "cd #{scm_path}",
 	  "#{source.checkout revision, scm_path}",
 	  "#{source.export revision, release_path}",

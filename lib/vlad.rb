@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'thread'
 require 'rake/remote_task'
+require 'rainbow'
 
 $TESTING ||= false
 
@@ -75,5 +76,9 @@ class String #:nodoc:
     else
       self[/\A.*?\./]
     end
+  end
+
+  def print_status(good=true)
+    puts self.to_s.color((good)? :yellow : :red)+"\r\n\r\n"
   end
 end

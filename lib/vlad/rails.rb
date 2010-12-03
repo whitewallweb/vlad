@@ -17,7 +17,7 @@ namespace :vlad do
   # No application files are on the DB machine, also migrations should only be
   # run once.
   remote_task :migrate, :roles => :app do
-    break unless target_host == Rake::RemoteTask.hosts_for(:app).first
+    "Migrating Database...".print_status
 
     directory = case migrate_target.to_sym
                 when :current then current_path
@@ -29,6 +29,6 @@ namespace :vlad do
 
     run ["cd #{directory}",
          "#{rake_cmd} RAILS_ENV=#{rails_env} db:migrate #{migrate_args}"
-        ].join(" ")
+        ].join(" && ")
   end
 end

@@ -8,11 +8,12 @@ namespace :vlad do
   remote_task :bundler, :roles => :web do
     unless gem_install_path
       # If we're caching gems in vendor, copy the existing gems (speeds things up)
-      puts "Copying gems from previous release to speed up installation ..."
+      "Updating gems...".print_status
       begin
         run "cp -Rf #{previous_release}/vendor/ruby #{latest_release}/vendor" 
       rescue Rake::CommandFailedError
-        puts "Copy failed. Most likely the previous release did not have gems installed to the same place."
+        "Copy failed. Most likely the previous release did not have gems installed to the same place.".print_status(false)
+	break
       end
 
       install_path = "vendor"
