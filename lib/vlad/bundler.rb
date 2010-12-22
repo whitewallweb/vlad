@@ -13,7 +13,6 @@ namespace :vlad do
         run "cp -Rf #{previous_release}/vendor/ruby #{latest_release}/vendor" 
       rescue Rake::CommandFailedError
         "Copy failed. Most likely the previous release did not have gems installed to the same place.".print_status(false)
-	break
       end
 
       install_path = "vendor"
